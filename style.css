@@ -16,6 +16,15 @@ body{
 	margin:40px auto;
 }
 
+#title{
+    text-align: left;
+    padding: 15px;
+    padding-left:20px;
+    background:white;
+    color:#333;
+    border-bottom:1px solid gainsboro;
+}
+
 #input-section{
 	padding:20px;
 }
