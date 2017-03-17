@@ -196,7 +196,7 @@ public class Main {\
 		
 	}
 	
-	var downloadBtnHTML = '<p id="download" class="button">Download ⇩</p>'
+	var downloadBtnHTML = '<p id="download" class="btn">Download ⇩</p>'
 	
 	function start(){
 		var text = js_beautify(generateMenu())
