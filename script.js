@@ -104,7 +104,7 @@ public class Main {\
 	function jumpTo(elem){
 	$('html, body').animate({
         scrollTop: $(elem).offset().top
-    }, 0);
+    }, 800);
 	}
 	
 

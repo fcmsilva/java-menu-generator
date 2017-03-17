@@ -42,14 +42,36 @@ input{
 	display:inline-block;
 }
 
+@keyframes slide{
+	from{
+		height:0;
+		padding:0 10px;
+		opacity:0;
+	}
+	to{
+		height:150px;
+		padding:10px;
+		opacity:1;
+	}
+}
+
 .case{
 	margin:10px 0;
-	padding:10px;
+	padding:10px 0px;
 	background:#FAFAFA;
 	border:1px solid gainsboro;
 	border-left:5px solid crimson;
 	position:relative;
+	height:0;
+	overflow:hidden;
+	animation-name:slide;
+	animation-iteration-count: 1;
+	animation-duration:0.8s;
+	animation-fill-mode:forwards;
+	animation-timing-function: ease-in-out;
 }
+
+
 
 .btn{
 	text-decoration:none;
