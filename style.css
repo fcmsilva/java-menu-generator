@@ -1,0 +1,120 @@
+*{
+	margin:0;
+	padding:0;
+	font-family:sans-serif;
+}
+
+body{
+	background:#FAFAFA;
+}
+
+#container{
+	background:white;
+	border:1px solid gainsboro;
+	border-bottom:5px solid crimson;
+	max-width:950px;
+	margin:40px auto;
+}
+
+#input-section{
+	padding:20px;
+}
+
+label,input{
+	display:block;
+}
+
+input{
+	padding:5px;
+	margin:10px;
+}
+
+.dependencies label, .dependencies input{
+	display:inline-block;
+}
+
+.case{
+	margin:10px 0;
+	padding:10px;
+	background:#FAFAFA;
+	border:1px solid gainsboro;
+	border-left:5px solid crimson;
+	position:relative;
+}
+
+.btn{
+	text-decoration:none;
+	padding:5px;
+	display:inline-block;
+	transition-duration:0s;
+	-webkit-user-select: none; /* Safari */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+
+#add-case{
+	color:white;
+	background:dodgerblue;
+	margin-bottom:20px;
+}
+
+.btn:hover{
+	color:rgba(256,256,256,0.8)!important;
+	cursor:pointer;
+}
+
+#create-btn{
+	display:block;
+	text-align:center;
+	background:crimson;
+	border-radius:5px 5px 0 0;
+	color:white;
+	font-weight:bold;
+	padding:17px 17px 12px 17px ;
+	max-width:80px;
+	margin:5px auto 0px auto;
+
+}
+
+.shortcut{
+	font-size:0.8em;
+	color:#666;
+}
+
+
+.remove-btn{
+	position:absolute;
+	top:0;
+	right:0;
+	background:crimson;
+	color:white;
+	font-weight:bold;
+}
+
+.input-wrapper{
+	display:inline-block;
+}
+
+#text-area {
+	display:none;
+    font-family: 'consolas',monospace;
+    font-size: 14px;
+    background: #333;
+    color: white;
+    margin: 20px;
+    padding: 10px;
+}
+
+#download {
+    background: dodgerblue;
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 10px;
+}
+
+#text-area {
+    position: relative;
+}

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <meta charset="UTF-8">
+    <title>Untitled Document</title>
+	<meta name="Author" content=""/>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="beautify.js"></script>
+	<script src="download.js"></script>
+	<script src="script.js"></script>
+</head>
+<body>
+<div id="container">
+	<div id="input-section">
+		<label for="author">Autor</label>
+		<input type="text" id="author" placeholder="abcd.costa">
+		<label for="class-name">Classe principal</label>
+		<input type="text" id="class-name" placeholder="Calculator, TheBigQuestion...">
+		<label for="obj-name">Objeto principal</label>
+		<input type="text" id="obj-name" placeholder="calc">
+		<p>Comandos (switch)</p>
+		<div id="switch-menu">
+		
+			<div class="case" id="case_1">
+				<div class="input-wrapper">
+				<label>Comando</label>
+				<input type="text" class="command" placeholder="CE">
+				</div>
+				<div class="input-wrapper">
+				<label>Constante</label>
+				<input type="text" class="const" value="COMMAND_1">
+				</div>
+				<div class="input-wrapper">
+				<label>Nome da função</label>
+				<input type="text" class="function" placeholder="ex: calcExpression">
+				</div>
+				<p>Precisa de:</p>
+				<div class="dependencies input-wrapper">
+				<label for="scanner_1">Scanner</label>
+				<input type="checkbox" id="scanner_1" class="check_scanner" checked>
+				<label for="obj_1">Objeto (ex:calc)</label>
+				<input type="checkbox" class="check_obj" id="obj_1" checked>
+				</div>
+				<p class="btn remove-btn">Remover</p>
+			</div>	
+		</div>
+		<p id="add-case" class="btn">Adicionar +1</p> <span class="shortcut">(CTRL + Q)</span>
+		
+		<label for="exit-cmd">Comando para sair</label>
+		<input type="text" id="exit-cmd" value="SAIR" placholder="SAIR">
+	
+	</div>
+	<pre name="" id="text-area"></pre>
+	<p class="btn" id="create-btn">Criar Main</p>
+</div>
+
+</body>
+</html>
