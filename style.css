@@ -99,12 +99,12 @@ div#uploader-section {
 
 @keyframes slide{
 	from{
-		height:0;
+		max-height:0;
 		padding:0 10px;
 		opacity:0;
 	}
 	to{
-		height:150px;
+		max-height:300px;
 		padding:10px;
 		opacity:1;
 	}
@@ -117,7 +117,6 @@ div#uploader-section {
 	border:1px solid gainsboro;
 	border-left:5px solid crimson;
 	position:relative;
-	height:0;
 	overflow:hidden;
 	animation-name:slide;
 	animation-iteration-count: 1;

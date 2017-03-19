@@ -93,6 +93,8 @@ public class Main {\
     	var func = func || "";
     	var constant = constant || "COMMAND_"+cases;
 
+    	if(typeof command=="object") command = "";
+
     	var html = getCaseHTML(cases);
 
     	var html = replaceSection(html,"command",command);
