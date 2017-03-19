@@ -58,8 +58,9 @@ div#uploader-section {
     background: #444;
     color: white;
     /* padding: 5px; */
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     padding-bottom: 5px;
+    text-align:center;
 }
 
 #uploader-section label {
@@ -67,14 +68,18 @@ div#uploader-section {
     background: crimson;
 }
 
+#uploader-section input{
+	margin:auto;
+	margin-top:10px;
+}
+
 #pdf-status{
-	margin-left:15px;
 	color:#DDD;
 	transition-duration:0.3s;
 	opacity:1;
 	overflow:hidden;
 	height:20px;
-	margin-bottom:5px;
+	margin:5px 0;
 }
 
 #pdf-status span{

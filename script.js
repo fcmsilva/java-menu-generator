@@ -270,7 +270,6 @@ public class Main {\
         }
         var fileReader = new FileReader();
         fileReader.onload = function(e) {
-        	console.log('a');
         	$("#pdf-status").removeClass('hidden');
             readPDFFile(new Uint8Array(e.target.result)).then(processPDF);
         };
