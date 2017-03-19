@@ -6,6 +6,9 @@
 	<meta name="Author" content="A frickin GENIUS"/>
 	<link rel="stylesheet" type="text/css" href="style.css">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="https://frontenddeveloping.github.io/pdfjs-dist/build/pdf.js"></script>
+    <script src="https://frontenddeveloping.github.io/pdfjs-dist/build/pdf.worker.js"></script>
+    <script src="pdf.js"></script>
 	<script src="beautify.js"></script>
 	<script src="download.js"></script>
 	<script src="script.js"></script>
@@ -14,6 +17,14 @@
 <div id="container">
 	<h2 id="title">Java Menu Generator</h2>
 	<div id="input-section">
+		<div id="uploader-section">
+			<label for="uploader" style=""><span>[BETA]</span> Importar pdf do enunciado</label>
+			<input type="file" id="uploader">
+			<p id="pdf-status" class="hidden">A analizar
+				<span class="spin">↻</span>
+			</p>
+		</div>
+		<!--<input type=file id=uploader>-->
 		<label for="author">Autor</label>
 		<input type="text" id="author" placeholder="abcd.costa">
 		<label for="class-name">Classe principal</label>

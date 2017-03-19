@@ -8,6 +8,18 @@ body{
 	background:#FAFAFA;
 }
 
+@keyframes spin {
+    from {transform:rotate(0deg);}
+    to {transform:rotate(360deg);}
+}
+
+.spin{
+	animation:spin;
+	animation-duration:1s;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear;
+}
+
 #container{
 	background:white;
 	border:1px solid gainsboro;
@@ -36,6 +48,44 @@ label,input{
 input{
 	padding:5px;
 	margin:10px;
+}
+
+label span {
+    font-weight: bold;
+}
+
+div#uploader-section {
+    background: #444;
+    color: white;
+    /* padding: 5px; */
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+}
+
+#uploader-section label {
+    padding: 5px;
+    background: crimson;
+}
+
+#pdf-status{
+	margin-left:15px;
+	color:#DDD;
+	transition-duration:0.3s;
+	opacity:1;
+	overflow:hidden;
+	height:20px;
+	margin-bottom:5px;
+}
+
+#pdf-status span{
+	display:inline-block;
+	transform-origin:50% 46%;
+	margin-left:2px;
+}
+
+#pdf-status.hidden{
+	opacity:0;
+	height:0px;
 }
 
 .dependencies label, .dependencies input{

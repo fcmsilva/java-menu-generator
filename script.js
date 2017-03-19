@@ -5,23 +5,28 @@
 //
 
 
-$( document ).ready(function() {
-	
-	var cases = 1;
-    
-	var caseHTML = 
-		'	<div class="case" id="case_1">\
+$(document).ready(function() {
+
+	const DEFAULT_AUTHOR = "my.name";
+	const DEFAULT_CLASS = "ClassName";
+	const DEFAULT_OBJ = "obj";
+	const DEFAULT_EXIT_CMD = "SAIR";
+
+    var cases = 1;
+
+    var caseHTML =
+        '	<div class="case" id="case_1">\
 				<div class="input-wrapper">\
 				<label>Comando</label>\
-				<input type="text" class="command" placeholder="CE">\
+				<input type="text" class="command" placeholder="CE" value = {{command}}>\
 				</div>\
 				<div class="input-wrapper">\
 				<label>Constante</label>\
-				<input type="text" class="const" value="COMMAND_1">\
+				<input type="text" class="const" value="{{constant}}">\
 				</div>\
 				<div class="input-wrapper">\
 				<label>Nome da função</label>\
-				<input type="text" class="function" placeholder="ex: calcExpression">\
+				<input type="text" class="function" placeholder="ex: calcExpression" value="{{func}}">\
 				</div>\
 				<p>Precisa de:</p>\
 				<div class="dependencies input-wrapper">\
@@ -32,7 +37,7 @@ $( document ).ready(function() {
 				</div>\
 				<p class="btn remove-btn">Remover</p>\
 			</div>';
-	var baseJava  = 'import java.util.Scanner;\n \
+    var baseJava = 'import java.util.Scanner;\n \
 	/**\n \
 	* @author {{author}} \n \
 	 * \n \
@@ -76,151 +81,199 @@ public class Main {\
 	}\
 }\
 ';
-	
-	function getCaseHTML (i){
-		return caseHTML.replace(/_1/g,"_"+i);
-	}
-	
-	function addCase(){
-		$("#switch-menu").append(getCaseHTML(++cases));
-		//document.getElementById("switch-menu").innerHTML+=getCaseHTML(++cases);
-		jumpTo("#case_"+cases)
-		$("#case_"+cases+" .command").first().focus();
-	}
-	
-	
-	$("#add-case").click(addCase);
-	
-	$("#switch-menu").on("click",".remove-btn",function(){
-		//cases--;
-		$(this).parent().remove();
-	});
-	
-	function replaceSection(original,section,content){
-		var newTxt = original.replace( new RegExp('{{'+section+'}}', 'ig'), content);
-		return newTxt;
-	}
-	
-	function jumpTo(elem){
-	$('html, body').animate({
-        scrollTop: $(elem).offset().top
-    }, 800);
-	}
-	
 
-	
-	function generateMenu(){
-		var info = getInfo();
-		var javaTxt = baseJava;
-		javaTxt = replaceSection(javaTxt,'author',info.author);
-		javaTxt = replaceSection(javaTxt,'class',info.class);
-		javaTxt = replaceSection(javaTxt,'obj',info.obj);
-		javaTxt = replaceSection(javaTxt,'exitCMD',info.exit);
-		javaTxt = replaceSection(javaTxt,'author',info.author);
-		var constants = "";
-		var functions = "";
-		var cases = "";
-		for(var i=0;i<info.cases.length;i++){
-			var currCase = info.cases[i];
-			var cons = currCase.constant;
-			var cmd = currCase.command;
-			var func = currCase.function;
-			var scan = currCase.scanner;
-			var obj = currCase.obj;
-			constants+="private static final String "+cons+" = \""+cmd+"\"; \n";
-			functions += func!="" ? "\
-				private static void "+func+"("+((scan ? "Scanner in":"")+(obj ? (", "+info.class+" "+info.obj):""))+") { \n \n \
+    function getCaseHTML(i) {
+        return caseHTML.replace(/_1/g, "_" + i);
+    }
+
+    function addCase(command,constant,func,ignoreAnimation) {
+    	cases ++;
+
+    	var command = command || "";
+    	var func = func || "";
+    	var constant = constant || "COMMAND_"+cases;
+
+    	var html = getCaseHTML(cases);
+
+    	var html = replaceSection(html,"command",command);
+    	var html = replaceSection(html,"constant",constant);
+    	var html = replaceSection(html,"func",func);
+
+        $("#switch-menu").append(html);
+        //document.getElementById("switch-menu").innerHTML+=getCaseHTML(++cases);
+        if(!ignoreAnimation){
+        	jumpTo("#case_" + cases)
+    	}
+        $("#case_" + cases + " .command").first().focus();
+    }
+
+
+    $("#add-case").click(addCase);
+
+    $("#switch-menu").on("click", ".remove-btn", function() {
+        //cases--;
+        $(this).parent().remove();
+    });
+
+    function replaceSection(original, section, content) {
+        var newTxt = original.replace(new RegExp('{{' + section + '}}', 'ig'), content);
+        return newTxt;
+    }
+
+    function jumpTo(elem) {
+        $('html, body').animate({
+            scrollTop: $(elem).offset().top
+        }, 800);
+    }
+
+
+
+    function generateMenu() {
+        var info = getInfo();
+        var javaTxt = baseJava;
+        var author = info.author || DEFAULT_AUTHOR;
+        var className = info.class || DEFAULT_CLASS;
+        var objName = info.obj || DEFAULT_OBJ;
+        var exit = info.exit || DEFAULT_EXIT_CMD;
+
+        javaTxt = replaceSection(javaTxt, 'author', author);
+        javaTxt = replaceSection(javaTxt, 'class', className);
+        javaTxt = replaceSection(javaTxt, 'obj', objName);
+        javaTxt = replaceSection(javaTxt, 'exitCMD', exit);
+
+        var constants = "";
+        var functions = "";
+        var cases = "";
+        for (var i = 0; i < info.cases.length; i++) {
+            var currCase = info.cases[i];
+            var cons = currCase.constant;
+            var cmd = currCase.command;
+            var func = currCase.function;
+            var scan = currCase.scanner;
+            var obj = currCase.obj;
+            var comma = (obj && scan ? ",":"");
+            constants += "private static final String " + cons + " = \"" + cmd + "\"; \n";
+            functions += func != "" ? "\
+				private static void " + func + "(" + ((scan ? "Scanner in" : "") + (obj ? (comma + className + " " + objName) : "")) + ") { \n \n \
 				}\n\n" : "";
-			cases += "case "+cons+": \n \
-				"+(func!= "" ? (func+"("+((scan ? "in":"")+(obj ? (", "+info.obj):""))+");\n	") : "")+
-			"break;";
-		}
-		javaTxt = replaceSection(javaTxt,'constants',constants);
-		javaTxt = replaceSection(javaTxt,'functions',functions);
-		javaTxt = replaceSection(javaTxt,'cases',cases);
-		
-		return javaTxt;
-	}
-	
-	function getInfo(){
-		var obj = {
-			author:"abc.abc",
-			class:"Class",
-			obj:"obj",
-			cases:[
-				{
-					command:'CE',
-					constant:'COMM_1',
-					function:'calcExp',
-					scanner:false,
-					obj:false
-				},
-			],
-			exit:"SAIR"
-		}
-		
-		obj.author = $("#author").val();
-		obj.class = $("#class-name").val();
-		obj.obj = $("#obj-name").val();
-		obj.cases = [];
-		$(".case").each(function(i,elem){
-			var caseObj = {
-				command:'',
-				constant:'',
-				function:'',
-				scanner:false,
-				obj:false
-			}
-			
-			caseObj.command = $(this).find('.command').val();
-			caseObj.constant = $(this).find('.const').val();
-			caseObj.function = $(this).find('.function').val();
-			obj.cases.push(caseObj);
-			caseObj.scanner = $(this).find('.check_scanner').prop('checked');
-			caseObj.obj=$(this).find('.check_obj').prop('checked');
-		});
-		
-		var exitCMD = $("#exit-cmd").val();
-		var isConstant = false;
-		for(var i=0;i<obj.cases.length && !isConstant;i++){
-			if(obj.cases[i].constant==exitCMD){
-				isConstant = true;
-			}
-		}
-		if(!isConstant){
-			exitCMD = '"'+exitCMD+'"';
-		}
-		obj.exit = exitCMD;
-			
-		return obj;
-		
-	}
-	
-	var downloadBtnHTML = '<p id="download" class="btn">Download ⇩</p>'
-	
-	function start(){
-		var text = js_beautify(generateMenu())
-		document.getElementById('text-area').innerHTML = downloadBtnHTML + text;
-		$("#text-area").show();
-		//download(text, "Main.class", "text/plain");
-	}
-	
-	$("body").on("click","#download",function(){
-		var parent = $(this).parent();
-		$(this).remove();
-		download(parent.html(),'Main.class','text/plain');
-		parent.append(downloadBtnHTML);
-		
-	})
-	
-	
-	$("#create-btn").click(start);
-	
-	$(document).keydown(function(e) {
+            cases += "case " + cons + ": \n \
+				" + (func != "" ? (func + "(" + ((scan ? "in" : "") + (obj ? (comma + objName) : "")) + ");\n	") : "") +
+                "break;";
+        }
+        javaTxt = replaceSection(javaTxt, 'constants', constants);
+        javaTxt = replaceSection(javaTxt, 'functions', functions);
+        javaTxt = replaceSection(javaTxt, 'cases', cases);
+
+        return javaTxt;
+    }
+
+    function getInfo() {
+        var obj = {
+            author: "abc.abc",
+            class: "Class",
+            obj: "obj",
+            cases: [{
+                command: 'CE',
+                constant: 'COMM_1',
+                function: 'calcExp',
+                scanner: false,
+                obj: false
+            }, ],
+            exit: "SAIR"
+        }
+
+        obj.author = $("#author").val();
+        obj.class = $("#class-name").val();
+        obj.obj = $("#obj-name").val();
+        obj.cases = [];
+        $(".case").each(function(i, elem) {
+            var caseObj = {
+                command: '',
+                constant: '',
+                function: '',
+                scanner: false,
+                obj: false
+            }
+
+            caseObj.command = $(this).find('.command').val();
+            caseObj.constant = $(this).find('.const').val();
+            caseObj.function = $(this).find('.function').val();
+            obj.cases.push(caseObj);
+            caseObj.scanner = $(this).find('.check_scanner').prop('checked');
+            caseObj.obj = $(this).find('.check_obj').prop('checked');
+        });
+
+        var exitCMD = $("#exit-cmd").val();
+        var isConstant = false;
+        for (var i = 0; i < obj.cases.length && !isConstant; i++) {
+            if (obj.cases[i].constant == exitCMD) {
+                isConstant = true;
+            }
+        }
+        if (!isConstant) {
+            exitCMD = '"' + exitCMD + '"';
+        }
+        obj.exit = exitCMD;
+
+        return obj;
+
+    }
+
+    var downloadBtnHTML = '<p id="download" class="btn">Download ⇩</p>'
+
+    function start() {
+        var text = js_beautify(generateMenu())
+        document.getElementById('text-area').innerHTML = downloadBtnHTML + text;
+        $("#text-area").show();
+        //download(text, "Main.class", "text/plain");
+    }
+
+    $("body").on("click", "#download", function() {
+        var parent = $(this).parent();
+        $(this).remove();
+        download(parent.html(), 'Main.java', 'text/plain');
+        parent.append(downloadBtnHTML);
+
+    })
+
+
+    $("#create-btn").click(start);
+
+    $(document).keydown(function(e) {
         if (e.keyCode == 81 && e.ctrlKey) {
             addCase();
         }
     });
-	
-	
+
+    function processPDF(text){
+    	$("#pdf-status").addClass('hidden');
+    	var allKeywords = text.match(/\b(?!\bPOO\b)[A-Z]{2,}\b/g);
+    	var keywords = [];
+    	for(var i=0;i<allKeywords.length;i++){
+    		var curr = allKeywords[i];
+    		if(keywords.indexOf(curr)==-1){
+    			keywords.push(curr);
+    		}
+    	}
+    	$(".case").remove();
+    	keywords.forEach(function(constant){
+    		addCase(constant,constant,constant.toLowerCase(),true);
+    		//jumpTo("#case_" + cases);
+    	});
+    }
+
+    document.getElementById('uploader').addEventListener('change', function() {
+        var file = this.files[0];
+        linkCounter = 0;
+        if (!file) {
+            return;
+        }
+        var fileReader = new FileReader();
+        fileReader.onload = function(e) {
+        	console.log('a');
+        	$("#pdf-status").removeClass('hidden');
+            readPDFFile(new Uint8Array(e.target.result)).then(processPDF);
+        };
+        fileReader.readAsArrayBuffer(file);
+    });
 });
