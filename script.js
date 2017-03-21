@@ -14,6 +14,8 @@ $(document).ready(function() {
 
     var cases = 1;
 
+    var messagesList = [];
+
     var caseHTML =
         '	<div class="case" id="case_1">\
 				<div class="input-wrapper">\
@@ -128,7 +130,9 @@ public class Main {\
         }, 800);
     }
 
-
+    function createConstant(cons,cmd){
+        return "private static final String " + cons + " = \"" + cmd + "\"; \n";
+    }
 
     function generateMenu() {
         var info = getInfo();
@@ -144,6 +148,19 @@ public class Main {\
         javaTxt = replaceSection(javaTxt, 'exitCMD', exit);
 
         var constants = "";
+
+        for(var i=0;i<messagesList.length;i++){
+            var msg = messagesList[i];
+
+            cons = msg.replace(/(\ |\s| | )+/g,"_");
+            cons = cons.toUpperCase().replace(/[^a-z|_]/ig,"");
+            cons = cons.replace(/_/g," ").trim().replace(/\s/g,"_");
+            
+            constants+=createConstant(cons,msg);
+        }
+
+        constants += "\n";
+
         var functions = "";
         var cases = "";
         for (var i = 0; i < info.cases.length; i++) {
@@ -154,7 +171,7 @@ public class Main {\
             var scan = currCase.scanner;
             var obj = currCase.obj;
             var comma = (obj && scan ? ",":"");
-            constants += "private static final String " + cons + " = \"" + cmd + "\"; \n";
+            constants += createConstant(cons,cmd);
             functions += func != "" ? "\
 				private static void " + func + "(" + ((scan ? "Scanner in" : "") + (obj ? (comma + className + " " + objName) : "")) + ") { \n \n \
 				}\n\n" : "";
@@ -249,7 +266,9 @@ public class Main {\
 
     function processPDF(text){
     	$("#pdf-status").addClass('hidden');
-    	var allKeywords = text.match(/\b(?!\bPOO\b)[A-Z]{2,}\b/g);
+        messagesList = [];
+
+    	var allKeywords = text.match(/\b(?!\bPOO|IP\b)[A-Z]{2,}\b/g);
     	var keywords = [];
     	for(var i=0;i<allKeywords.length;i++){
     		var curr = allKeywords[i];
@@ -257,6 +276,12 @@ public class Main {\
     			keywords.push(curr);
     		}
     	}
+
+        var messages = text.match(/(\\|“|”|‘|’|")(.*?)(\\|“|”|‘|’|")/g).map(function(e){
+            var msg = e.replace(/(\\|“|”|‘|’|")/g,"").trim();
+            if(messagesList.indexOf(msg)==-1) messagesList.push(msg);
+        });
+
     	$(".case").remove();
     	keywords.forEach(function(constant){
     		addCase(constant,constant,constant.toLowerCase(),true);
