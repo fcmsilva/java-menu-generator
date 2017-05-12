@@ -277,10 +277,14 @@ public class Main {\
     		}
     	}
 
-        var messages = text.match(/(\\|“|”|‘|’|")(.*?)(\\|“|”|‘|’|")/g).map(function(e){
-            var msg = e.replace(/(\\|“|”|‘|’|")/g,"").trim();
-            if(messagesList.indexOf(msg)==-1) messagesList.push(msg);
-        });
+    	var messagesRgx = text.match(/(\\|“|”|‘|’|")(.*?)(\\|“|”|‘|’|")/g);
+    	var messages = [];
+    	if(messagesRgx!=null){
+      		messagesRgx.map(function(e){
+    		    var msg = e.replace(/(\\|“|”|‘|’|")/g,"").trim();
+           		if(messagesList.indexOf(msg)==-1) messagesList.push(msg);
+       		 });
+		}
 
     	$(".case").remove();
     	keywords.forEach(function(constant){
